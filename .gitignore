@@ -1,0 +1,14 @@
+# Terraform working files and state (state lives in the remote backend, never in git)
+.terraform/
+*.tfstate
+*.tfstate.*
+*.tfplan
+crash.log
+# variable files may hold secrets
+*.tfvars
+*.tfvars.json
+!example.tfvars
+# secrets
+.env
+*.pem
+*.key
