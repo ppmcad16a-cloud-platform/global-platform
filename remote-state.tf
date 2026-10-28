@@ -55,4 +55,17 @@ locals {
       aws   = try(data.terraform_remote_state.aws_cluster.outputs.egress_ip, null)
     } : cloud => ip if ip != null
   }
+
+  # { gcp = "34.x.x.x", ... } - front-door IPs of the clusters running right now
+  ingress_ips = {
+    for cloud, ip in {
+      gcp   = try(data.terraform_remote_state.gcp_cluster.outputs.ingress_ip, null)
+      azure = try(data.terraform_remote_state.azure_cluster.outputs.ingress_ip, null)
+      aws   = try(data.terraform_remote_state.aws_cluster.outputs.ingress_ip, null)
+    } : cloud => ip if ip != null
+  }
+
+  # Running clouds in a fixed order (first one = fallback pool).
+  live_clouds = [for c in ["gcp", "azure", "aws"] : c if contains(keys(local.ingress_ips), c)]
+
 }

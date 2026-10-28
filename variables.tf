@@ -38,3 +38,8 @@ variable "cloudflare_zone_id" {
   type    = string
   default = "011ab0392ceae0c4b429b5e65bda72e5"
 }
+
+variable "cloudflare_account_id" {
+  type    = string
+  default = "9b10c019cbe50e9d98d061d2bf41bf78"
+}

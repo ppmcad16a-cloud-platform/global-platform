@@ -12,3 +12,14 @@ output "seed_admin_password" {
   value       = random_password.seed_admin.result
   sensitive   = true
 }
+
+output "live_clouds" {
+  value = local.live_clouds
+}
+
+output "urls" {
+  value = merge(
+    { shop = "https://${var.domain}" },
+    { for c in keys(local.ingress_ips) : c => "https://${c}.${var.domain}" },
+  )
+}
