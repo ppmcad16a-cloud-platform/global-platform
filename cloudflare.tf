@@ -39,4 +39,12 @@ resource "cloudflare_origin_ca_certificate" "origin" {
   hostnames          = [var.domain, "*.${var.domain}"]
   request_type       = "origin-rsa"
   requested_validity = 5475
+
+  # The API reports these fields back slightly differently (e.g. validity
+  # counted down from today), which Terraform would treat as a change and
+  # REPLACE the certificate - revoking the old one on every apply.
+  # A certificate valid until 2041 never needs that; ignore the drift.
+  lifecycle {
+    ignore_changes = [requested_validity, csr]
+  }
 }
