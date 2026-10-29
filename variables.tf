@@ -43,3 +43,8 @@ variable "cloudflare_account_id" {
   type    = string
   default = "9b10c019cbe50e9d98d061d2bf41bf78"
 }
+
+variable "admin_emails" {
+  description = "People who may open Jenkins (Cloudflare Access emails them a one-time PIN). Set in terraform.tfvars, which git ignores - the repo is public."
+  type        = list(string)
+}
