@@ -45,6 +45,10 @@ resource "cloudflare_notification_policy" "pool_health" {
   description = "The gcp/azure/aws pool of the shop load balancer went unhealthy or recovered"
   alert_type  = "load_balancing_health_alert"
   enabled     = true
+  # Only the pool event - the origin event repeats the same news (we have one origin per pool).
+  filters = {
+    event_source = ["pool"]
+  }
   mechanisms = {
     webhooks = [{ id = cloudflare_notification_policy_webhooks.slack.id }]
   }
