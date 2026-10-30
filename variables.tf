@@ -48,3 +48,8 @@ variable "admin_emails" {
   description = "People who may open Jenkins (Cloudflare Access emails them a one-time PIN). Set in terraform.tfvars, which git ignores - the repo is public."
   type        = list(string)
 }
+
+variable "workers_subdomain" {
+  description = "The account's workers.dev subdomain (Workers & Pages page)"
+  type        = string
+}
