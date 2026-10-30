@@ -34,7 +34,8 @@ resource "cloudflare_load_balancer_monitor" "health" {
   }
 }
 
-# One pool per RUNNING cloud, each with that cloud's front-door IP.
+# One pool per cloud that has a cluster (running OR asleep), each with that
+# cloud's front-door IP. A sleeping cluster's pool is simply unhealthy.
 resource "cloudflare_load_balancer_pool" "cloud" {
   for_each        = local.ingress_ips
   account_id      = var.cloudflare_account_id
@@ -64,8 +65,10 @@ resource "cloudflare_load_balancer" "shop" {
   default_pools = [for c in local.live_clouds : cloudflare_load_balancer_pool.cloud[c].id]
   fallback_pool = cloudflare_load_balancer_pool.cloud[local.live_clouds[0]].id
 
-  # All healthy clouds share the traffic; an unhealthy one is skipped.
-  steering_policy = "random"
+  # FAILOVER, not sharing: every visitor goes to the FIRST healthy pool in
+  # default_pools - GCP (primary), then Azure, then AWS (standbys that sleep
+  # until GCP fails and they are woken; see platform-automation wake.yml).
+  steering_policy = "off"
 
   # A visitor keeps going to the same cloud (cookie), important for the
   # Socket.IO support chat whose state lives in one cluster.
