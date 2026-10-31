@@ -67,7 +67,7 @@ resource "google_secret_manager_secret_version" "mongo_backup_uri" {
   secret_data = local.mongo_backup_uri
 }
 
-# ---------- Azure: Key Vault (created in Phase 4 foundation)
+# ---------- Azure: Key Vault (created by azure-platform's foundation stack)
 data "azurerm_key_vault" "mern" {
   name                = data.terraform_remote_state.azure_foundation.outputs.key_vault_name
   resource_group_name = "rg-prod-foundation"

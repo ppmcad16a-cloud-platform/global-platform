@@ -31,7 +31,7 @@ resource "mongodbatlas_database_user" "app" {
   }
 }
 
-# backup-ro: may only READ - used by the nightly backup job (Phase 10).
+# backup-ro: may only READ - used by the nightly backup job.
 resource "random_password" "mongo_backup" {
   length  = 32
   special = false
