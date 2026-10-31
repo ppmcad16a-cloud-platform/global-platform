@@ -121,7 +121,7 @@ resource "cloudflare_dns_record" "observability" {
   content  = each.value
   proxied  = true
   ttl      = 1
-  comment  = "Phase 9 observability - behind Cloudflare Access (terraform)"
+  comment  = "Observability backend - behind Cloudflare Access (terraform)"
 }
 
 # ---------- The service token, for the central Grafana (read by GKE External Secrets)
